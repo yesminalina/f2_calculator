@@ -8,7 +8,7 @@ bp = Blueprint('calculator', __name__)
 
 @bp.route('/')
 def index():
-    session['vasos'] = 6
+    session['vasos'] = 5
     return redirect(url_for('calculator.basic_f2calculator', vasos=session['vasos']))
 
 @bp.route('/create', methods=['POST'])
