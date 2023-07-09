@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<title>{% block title %}{% endblock %} - F2 perfiles disolución</title>
+<nav class="menu">
+</nav>
+<section class="content">
+    <header>
+        {% block header %}
+        {% endblock %}
+    </header>
+    {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+</section>

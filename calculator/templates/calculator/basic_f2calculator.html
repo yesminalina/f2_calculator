@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>Calculadora de F2 - Perfiles de Disolución</h1>
+{% endblock %}
+
+{% block content %}
+<div class="forma_vasos">
+    <form method="POST" action="{{ url_for('calculator.create') }}">
+        <input type="number" name="vasos" id="vasos" placeholder="Nº de vasos">
+        <input type="submit" value="Cambiar" id="cambiar">
+    </form>
+</div>
+<div class="calculadora">
+        <table>
+            <tr>
+                <th>Tiempo</th>
+                <th>% Disuelto Referente</th>
+                <th>% Disuelto Test</th>
+            </tr>
+            <form action="{{ url_for('calculator.basic_f2calculator', vasos=vasos) }}" method="POST">
+            {% for vaso in range(1, vasos+1) %}
+            {% if f2 %}
+            <tr>
+                <td><input type="number" id="t{{vaso}}" name="t{{vaso}}" value="{{ tiempo['{}'.format(vaso)] }}"></td>
+                <td><input type="number" name="ref_dis_{{vaso}}" id="ref_dis_{{vaso}}" value="{{ ref_dis_prom['{}'.format(vaso)] }}" required></td>
+                <td><input type="number" name="test_dis_{{vaso}}" id="test_dis_{{vaso}}" value="{{ test_dis_prom['{}'.format(vaso)] }}" required></td>
+            </tr>
+
+            {% else %}
+            <tr>
+                <td><input type="number" id="t{{vaso}}" name="t{{vaso}}" placeholder="(min)"></td>
+                <td><input type="number" name="ref_dis_{{vaso}}" id="ref_dis_{{vaso}}" placeholder="%" required></td>
+                <td><input type="number" name="test_dis_{{vaso}}" id="test_dis_{{vaso}}" placeholder="%" required></td>
+            </tr>
+            {% endif %}
+            {%endfor%}
+            <tr>
+                <td><input type="submit" value="Calcular" id="calcular"/></td>
+                <td style="height:20px"><b>f2: {% if f2%}{{f2}}{% endif %}</b></td>
+            </form>
+                <td>
+                <form action="{{ url_for('calculator.clear', vasos=vasos) }}" method="POST">
+                <input type="submit" value="Limpiar" id="limpiar">
+                </form> 
+                </td>
+            </tr>
+        </table>             
+</div>
+{% endblock %}
