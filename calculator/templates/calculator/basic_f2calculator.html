@@ -1,50 +1,112 @@
 {% extends 'base.html' %}
 
-{% block header %}
-<h1>Calculadora de F2 - Perfiles de Disolución</h1>
+{% block title %}
+Cálculo de F2 - Perfiles de Disolución
+{% endblock %}
+
+{% block menu %}
+<ul class="navbar-nav">
+    <li class="nav-item mx-2">
+        <a class="nav-link mx-2" href="#">Inicio</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active mx-2" aria-current="page" href="#">Calculadora F2</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link disabled mx-2" href="#">Calculadora AV</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link disabled mx-2">Contacto</a>
+    </li>
+</ul>
 {% endblock %}
 
 {% block content %}
-<div class="forma_vasos">
-    <form method="POST" action="{{ url_for('calculator.create') }}">
-        <input type="number" name="vasos" id="vasos" placeholder="Nº Tiempos">
-        <input type="submit" value="Cambiar" id="cambiar">
-    </form>
-</div>
-<div class="calculadora">
-        <table>
-            <tr>
-                <th>Tiempo</th>
-                <th>% Disuelto Referente</th>
-                <th>% Disuelto Test</th>
-            </tr>
-            <form action="{{ url_for('calculator.basic_f2calculator', vasos=vasos) }}" method="POST">
-            {% for vaso in range(1, vasos+1) %}
-            {% if f2 %}
-            <tr>
-                <td><input type="number" id="t{{vaso}}" name="t{{vaso}}" value="{{ tiempo['{}'.format(vaso)] }}"></td>
-                <td><input type="number" name="ref_dis_{{vaso}}" id="ref_dis_{{vaso}}" value="{{ ref_dis_prom['{}'.format(vaso)] }}" required></td>
-                <td><input type="number" name="test_dis_{{vaso}}" id="test_dis_{{vaso}}" value="{{ test_dis_prom['{}'.format(vaso)] }}" required></td>
-            </tr>
+<!--instructions-->
+<section class="container-fluid p-4" style="color:#001C30">
+    <h1>Calculadora de F2 <small class="text-muted"> - Versión básica</small></h1>
+    <h2>Calcula el factor de similitud entre dos perfiles de disolución</h2>
+    <p class="text-muted">En esta versión básica de la calculadora de F2, debes ingresar los promedios de fármaco disuelto, en cada uno de los puntos del perfil de disolución.</p>
+    <p>Utiliza la <a href="">versión avanzada</a> para ingresar los datos de cada vaso y calcular los coeficientes de variación.</p>
+</section>
 
+<!--Calculadora-->
+<section class="container w-75 border border-black p-4 mb-4 calculadora">
+    <!--form tiempos-->
+    <form method="POST" action="{{ url_for('calculator.create') }}">
+        <div class="row  align-items-center">
+            <div class="col-4 m-0">
+                <label for="vasos" class="form-label m-0">Ingresa la cantidad de puntos de los perfiles:</label>
+            </div>
+            <div class="col-4 m-0">
+                <input type="number" class="form-control" name="vasos" id="vasos" placeholder="Nº de tiempos">
+            </div>
+        </div>
+    </form>
+    <!--form calculadora-->
+    <form action="{{ url_for('calculator.basic_f2calculator', vasos=vasos) }}" method="POST">
+    <div class="row row-cols-3 my-3 gy-2">
+        
+        <div class="col p-1">
+            <h3 class="text-center">Tiempo</h3>
+        </div>
+        <div class="col p-1">
+            <h3 class="text-center">% Disuelto Referente</h3>
+        </div>
+        <div class="col p-1">
+            <h3 class="text-center">% Disuelto Producto</h3>
+        </div>
+        {% for vaso in range(1, vasos+1) %}
+        <!--after f2-->
+        {% if f2 %}
+        <div class="col">
+            <!--tengo duda si puede haber un error al usar variable tiempo, si el array se llama igual-->
+            <input type="number" class="form-control m-0" id="t{{vasos}}" name="t{{vasos}}"
+                value="{{ tiempo['{}'.format(vaso)] }}">
+        </div>
+        <div class="col">
+            <input type="number" class="form-control m-0" name="ref_dis_{{vaso}}" id="ref_dis_{{vaso}}"
+                value="{{ ref_dis_prom['{}'.format(vaso)] }}" required>
+        </div>
+        <div class="col">
+            <input type="number" class="form-control m-0" name="test_dis_{{vaso}}" id="test_dis_{{vaso}}"
+                value="{{ test_dis_prom['{}'.format(vaso)] }}" required>
+        </div>
+        <!--before f2-->
+        {% else %}
+        <div class="col">
+            <input type="number" class="form-control m-0" id="t{{vaso}}" name="t{{vaso}}" placeholder="(min)">
+        </div>
+        <div class="col">
+            <input type="number" class="form-control m-0" name="ref_dis_{{vaso}}" id="ref_dis_{{vaso}}" placeholder="%"
+                required>
+        </div>
+        <div class="col">
+            <input type="number" class="form-control m-0" name="test_dis_{{vaso}}" id="test_dis_{{vaso}}"
+                placeholder="%" required>
+        </div>
+        {% endif %}
+        {%endfor%}
+    </div>
+    <div class="row justify-content-start align-items-center">
+        <div class="col-4 text-end">
+            <button type="submit" class="btn btn-outline-dark">Calcular</button>
+        </div>
+        <div class="col-4 d-flex text-center justify-content-start">
+            <p class="p-2">f2:</p>
+            {% if f2 %}
+            <input value="{{f2}}" class="form-control">
             {% else %}
-            <tr>
-                <td><input type="number" id="t{{vaso}}" name="t{{vaso}}" placeholder="(min)"></td>
-                <td><input type="number" name="ref_dis_{{vaso}}" id="ref_dis_{{vaso}}" placeholder="%" required></td>
-                <td><input type="number" name="test_dis_{{vaso}}" id="test_dis_{{vaso}}" placeholder="%" required></td>
-            </tr>
+            <input class="form-control">
             {% endif %}
-            {%endfor%}
-            <tr>
-                <td><input type="submit" value="Calcular" id="calcular"/></td>
-                <td style="height:20px"><b>f2: {% if f2%}{{f2}}{% endif %}</b></td>
+        </div>
+        </form>
+        <div class="col-4">
+            <form action="{{ url_for('calculator.clear', vasos=vasos) }}" method="POST">
+                <button type="submit" class="btn btn-outline-dark ">Limpiar</button>
             </form>
-                <td>
-                <form action="{{ url_for('calculator.clear', vasos=vasos) }}" method="POST">
-                <input type="submit" value="Limpiar" id="limpiar">
-                </form> 
-                </td>
-            </tr>
-        </table>             
-</div>
-{% endblock %}
+        </div>
+    </div>
+</section>
+
+    {% endblock %}

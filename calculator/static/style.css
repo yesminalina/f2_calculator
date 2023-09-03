@@ -1,83 +1,47 @@
-* {
-    margin: 0;
-    padding: 0;
-    text-decoration: none;
-}
-
 body {
-    font-family: sans-serif;
-}
-
-header {
-    background-color: cadetblue;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    min-width: 1024px;
+    font-family: 'Roboto', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     width: 100%;
-    max-height: 300px;
-    margin: 0 auto; 
+    margin: 0px;
+    background-color: rgb(243, 243, 243);
 }
 
-.titulo {
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: larger;
+/*menu*/
+nav {
+    background-color: #64CCC5;
 }
 
-.forma_vasos {
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 10px;
-    margin-top: 20px;
-    width: 40%;
+nav ul li {
+    letter-spacing: 2px;
 }
 
-.forma_vasos #cambiar{
-    display: inline;
+nav ul li:last-child {
+    border: none;
+}
+/* generales */
+h1 {
+    font-size: 2rem;
+}
+h2 {
+    font-size: 1rem;
+    text-transform: uppercase;
 }
 
-.forma_vasos #vasos{
-    display: inline;
-    padding-left: 15px; 
+h3 {
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+p {
+    margin: 0px;
 }
 
 .calculadora {
-    margin-left: auto;
-    margin-right: auto;
-    width: 40%;
+    background-color: white;
 }
 
-table {
-    border-collapse: collapse;
-}
-
-.calculadora th, td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-  }
-
-input[type=number] {
-    border-radius: 4px;
-    border-width: 1px;
-    height: 25px;
-    max-width: 100px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-
-}
-
-input[type=submit] {
-    background-color: cadetblue;
-    color: white;
-    border-radius: 4px;
-    border-width: 1px;
-    height: 30px;
-    width: 105px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    border: none;
-    cursor: pointer;
+/* footer */
+footer {
+    height: 3em;
+    line-height: 3em;
+    text-align: center;
 }
