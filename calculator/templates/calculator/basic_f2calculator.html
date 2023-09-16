@@ -36,15 +36,15 @@ Cálculo de F2 - Perfiles de Disolución
     <form method="POST" action="{{ url_for('calculator.create') }}">
         <div class="row  align-items-center">
             <div class="col-4 m-0">
-                <label for="vasos" class="form-label m-0">Ingresa la cantidad de puntos de los perfiles:</label>
+                <label for="tiempos" class="form-label m-0">Ingresa la cantidad de puntos de los perfiles:</label>
             </div>
             <div class="col-4 m-0">
-                <input type="number" class="form-control" name="vasos" id="vasos" placeholder="Nº de tiempos">
+                <input type="number" class="form-control" name="tiempos" id="tiempos" placeholder="Nº de tiempos">
             </div>
         </div>
     </form>
     <!--form calculadora-->
-    <form action="{{ url_for('calculator.basic_f2calculator', vasos=vasos) }}" method="POST">
+    <form action="{{ url_for('calculator.basic_f2calculator', tiempos=tiempos) }}" method="POST">
     <div class="row row-cols-3 my-3 gy-2">
         
         <div class="col p-1">
@@ -56,33 +56,33 @@ Cálculo de F2 - Perfiles de Disolución
         <div class="col p-1">
             <h3 class="text-center">% Disuelto Producto</h3>
         </div>
-        {% for vaso in range(1, vasos+1) %}
+        {% for tiempo in range(1, tiempos+1) %}
         <!--after f2-->
-        {% if f2 %}
+        {% if f2 %} 
         <div class="col">
             <!--tengo duda si puede haber un error al usar variable tiempo, si el array se llama igual-->
-            <input type="number" class="form-control m-0" id="t{{vasos}}" name="t{{vasos}}"
-                value="{{ tiempo['{}'.format(vaso)] }}">
+            <input type="number" class="form-control m-0" id="t{{tiempos}}" name="t{{tiempos}}"
+                value="{{ tiempo_input['{}'.format(tiempo)] }}">
         </div>
         <div class="col">
-            <input type="number" class="form-control m-0" name="ref_dis_{{vaso}}" id="ref_dis_{{vaso}}"
-                value="{{ ref_dis_prom['{}'.format(vaso)] }}" required>
+            <input type="number" class="form-control m-0" name="ref_dis_{{tiempo}}" id="ref_dis_{{tiempo}}"
+                value="{{ ref_dis_prom['{}'.format(tiempo)] }}" required>
         </div>
         <div class="col">
-            <input type="number" class="form-control m-0" name="test_dis_{{vaso}}" id="test_dis_{{vaso}}"
-                value="{{ test_dis_prom['{}'.format(vaso)] }}" required>
+            <input type="number" class="form-control m-0" name="test_dis_{{tiempo}}" id="test_dis_{{tiempo}}"
+                value="{{ test_dis_prom['{}'.format(tiempo)] }}" required>
         </div>
         <!--before f2-->
         {% else %}
         <div class="col">
-            <input type="number" class="form-control m-0" id="t{{vaso}}" name="t{{vaso}}" placeholder="(min)">
+            <input type="number" class="form-control m-0" id="t{{tiempo}}" name="t{{tiempo}}" placeholder="(min)">
         </div>
         <div class="col">
-            <input type="number" class="form-control m-0" name="ref_dis_{{vaso}}" id="ref_dis_{{vaso}}" placeholder="%"
+            <input type="number" class="form-control m-0" name="ref_dis_{{tiempo}}" id="ref_dis_{{tiempo}}" placeholder="%"
                 required>
         </div>
         <div class="col">
-            <input type="number" class="form-control m-0" name="test_dis_{{vaso}}" id="test_dis_{{vaso}}"
+            <input type="number" class="form-control m-0" name="test_dis_{{tiempo}}" id="test_dis_{{tiempo}}"
                 placeholder="%" required>
         </div>
         {% endif %}
@@ -102,7 +102,7 @@ Cálculo de F2 - Perfiles de Disolución
         </div>
         </form>
         <div class="col-4">
-            <form action="{{ url_for('calculator.clear', vasos=vasos) }}" method="POST">
+            <form action="{{ url_for('calculator.clear', tiempos=tiempos) }}" method="POST">
                 <button type="submit" class="btn btn-outline-dark ">Limpiar</button>
             </form>
         </div>

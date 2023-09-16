@@ -8,49 +8,50 @@ bp = Blueprint('calculator', __name__)
 
 @bp.route('/')
 def index():
-    session['vasos'] = 5
-    return redirect(url_for('calculator.basic_f2calculator', vasos=session['vasos']))
+    session['tiempos'] = 5
+    return redirect(url_for('calculator.basic_f2calculator', tiempos=session['tiempos']))
 
 @bp.route('/create', methods=['POST'])
 def create():
-    session['vasos'] = None
+    session['tiempos'] = None
     if request.method == 'POST':
-        vasos = int(request.form['vasos'])
-        session['vasos'] = vasos
-        return redirect(url_for('calculator.basic_f2calculator', vasos=session['vasos']))
+        tiempos = int(request.form['tiempos'])
+        session['tiempos'] = tiempos
+        return redirect(url_for('calculator.basic_f2calculator', tiempos=session['tiempos']))
     # return render_template('calculator/create.html')
 
-@bp.route('/basic_f2calculator/<int:vasos>', methods=['GET', 'POST'])
-def basic_f2calculator(vasos):
-    vasos = session['vasos']
+@bp.route('/basic_f2calculator/<int:tiempos>', methods=['GET', 'POST'])
+def basic_f2calculator(tiempos):
+    tiempos = session['tiempos']
 
     if request.method == 'POST':
         ref_dis_prom = {}
         test_dis_prom = {}
-        tiempo = {}
-        for vaso in range(1, vasos+1):
-            ref_dis_prom[f'{vaso}'] = request.form[f'ref_dis_{vaso}']
-            test_dis_prom[f'{vaso}'] = request.form[f'test_dis_{vaso}']
-            tiempo[f'{vaso}'] = request.form[f't{vaso}']
+        # puede que vaya a tener que cambiar el nombre de la variable tiempo
+        tiempo_input = {} 
+        for tiempo in range(1, tiempos+1):
+            ref_dis_prom[f'{tiempo}'] = request.form[f'ref_dis_{tiempo}']
+            test_dis_prom[f'{tiempo}'] = request.form[f'test_dis_{tiempo}']
+            tiempo_input[f'{tiempo}'] = request.form[f't{tiempo}']
   
         f2 = calculo_f2(ref_dis_prom, test_dis_prom)
 
         context ={
-            'vasos':vasos,
+            'tiempos':tiempos,
             'f2':f2,
-            'tiempo':tiempo,
+            'tiempo_input':tiempo_input,
             'ref_dis_prom':ref_dis_prom,
             'test_dis_prom':test_dis_prom
         }
 
         return render_template('calculator/basic_f2calculator.html', **context)
 
-    return render_template('calculator/basic_f2calculator.html', vasos=vasos) 
+    return render_template('calculator/basic_f2calculator.html', tiempos=tiempos) 
 
 @bp.route('/clear', methods=['GET', 'POST'])
 def clear():
-    vasos = session['vasos']
-    return redirect(url_for('calculator.basic_f2calculator', vasos=vasos)) 
+    tiempos = session['tiempos']
+    return redirect(url_for('calculator.basic_f2calculator', tiempos=tiempos)) 
 
 @bp.route('/update', methods=['GET', 'POST'])
 def update():
